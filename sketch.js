@@ -1,8 +1,8 @@
 //Globals
-var phrase = "To be or not to be";
+var phrase = "to be or not to be"; //characters used MUST be included in 'letters' variable
 
 var iteration = 0; //tracking number of attempts
-var letters = "abcdefghijklmnopqrstuvwxyz "; //notice including space
+var letters = "abcdefghijklmnopqrstuvwxyz "; //notice including space and only lower case chars
 
 var phraseAttempt = ""; //the attempt to match the 'phrase'
 
@@ -40,7 +40,8 @@ function draw(){
 	//Dictating how to handle current word not matching//
 	/////////////////////////////////////////////////////
 	if(phraseAttempt != phrase){
-		phraseAttempt = randPhrase();
+		// phraseAttempt = randPhrase();
+		phraseAttempt = keepMatch();
 	}else{
 		//end the loop phraseAttempt == phrase, 
 		fill(225,0,0);
@@ -49,3 +50,18 @@ function draw(){
 	}
 }
 
+
+function keepMatch(){
+//returns phrase where correct letters are kept and incorrect letters are changed to a random letter
+	var output="";
+	for(var i = 0; i <phrase.length; i++){
+		if (phraseAttempt[i]==phrase[i]){
+			//correct letter in position 'i'
+			output = output + phraseAttempt[i];
+		}else{
+			//incorrect letter replaced
+			output = output + randLetter();
+		}
+	}
+	return output;
+}
