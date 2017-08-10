@@ -1,5 +1,5 @@
 //Globals
-var phrase = "To be or not to be";
+var phrase = "to be or not to be";
 
 var iteration = 0; //tracking number of attempts
 var letters = "abcdefghijklmnopqrstuvwxyz "; //notice including space
