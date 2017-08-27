@@ -29,7 +29,6 @@ Monkey.prototype.writeText = function(){
 }
 
 function setup(){
-	createCanvas(800,430);
 	
 	monkeys.push(new Monkey('USING ONLY RANDOMNESS',2,function(){
 		var output = "";
@@ -38,7 +37,7 @@ function setup(){
 		}
 		return output;
 	}));
-
+	
 	monkeys.push(new Monkey('RANDOM BUT KEEPING CORRECT LETTERS',6,function(){
 		var output="";
 		for(var i = 0; i <phrase.length; i++){
@@ -51,7 +50,7 @@ function setup(){
 		}
 		return output;
 	}));
-
+	
 	monkeys.push(new Monkey('USING EACH LETTER FROM "ALPHABET"',10,function(){
 		var output="";
 		for(var i = 0; i <phrase.length; i++){
@@ -64,7 +63,34 @@ function setup(){
 			}
 		}
 		return output;
-	}));	
+	}));
+	
+	monkeys.push(new Monkey('BRUTE FORCE',14,function(){
+		var output="";
+		this.curL = this.curL || 1; //current length of string
+		this.tracker = this.tracker || new Array(this.curL).fill(0); //used for keeping track of index for each letter position
+		
+		//reset once whole array is at last mark
+		if(this.tracker.every((x)=>x>=letters.length-1)){
+			this.curL++;
+			this.tracker=new Array(this.curL).fill(0);
+		}
+		
+		var iterPick = this.tracker.length-1; //pick in tracker to increment
+		while(this.tracker[iterPick]>=letters.length-1){
+			this.tracker[iterPick]=0;
+			iterPick--;
+		}
+
+		this.tracker[iterPick]++;
+
+		//tranforming array into letters
+		for(var k of this.tracker){
+			output = output + letters[k];
+		}
+		return output;
+	}));
+	createCanvas(800,lineH*4.5*monkeys.length);
 }
 
 function draw(){
@@ -84,4 +110,9 @@ function draw(){
 function sepLine(y){
 	fill('white');
 	rect(0,y,width,2);
+}
+
+function recIncrease(arr, limit){
+	// takes array and recursively increments last item, until limit
+	
 }
