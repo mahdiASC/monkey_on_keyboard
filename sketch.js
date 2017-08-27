@@ -1,11 +1,8 @@
-//Globals
 var phrase = "to be or not to be"; //characters used MUST be included in 'letters' variable
-
 var letters = " abcdefghijklmnopqrstuvwxyz"; //notice including space and only lower case chars
 
-var lineH = 30;
-
-var monkeys = [];
+var lineH = 30; //lineheight
+var monkeys = []; //used to store Monkey objectss
 
 function Monkey(title, y, pickFunc){
 	this.title = title;
@@ -31,7 +28,6 @@ Monkey.prototype.writeText = function(){
 	text("Current attempt: " + this.phraseAttempt,width/2,lineH*(this.y+3));	
 }
 
-
 function setup(){
 	createCanvas(800,430);
 	
@@ -43,7 +39,7 @@ function setup(){
 		return output;
 	}));
 
-	monkeys.push(new Monkey('KEEPING CORRECT LETTERS',6,function(){
+	monkeys.push(new Monkey('RANDOM BUT KEEPING CORRECT LETTERS',6,function(){
 		var output="";
 		for(var i = 0; i <phrase.length; i++){
 			if (this.phraseAttempt[i]==phrase[i]){
@@ -84,7 +80,6 @@ function draw(){
 		k.writeText();
 	}
 }
-
 
 function sepLine(y){
 	fill('white');
