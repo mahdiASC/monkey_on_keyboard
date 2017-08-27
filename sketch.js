@@ -105,6 +105,11 @@ function draw(){
 	for(var k of monkeys){
 		k.writeText();
 	}
+
+	if(monkeys.every((x)=>x.phraseAttempt==phrase)){
+		//end of simulation (v. unlikely!)
+		noLoop();
+	}
 }
 
 function sepLine(y){
