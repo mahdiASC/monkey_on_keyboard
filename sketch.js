@@ -1,12 +1,17 @@
 var phrase = "to be or not to be"; //characters used MUST be included in 'letters' variable
 var letters = " abcdefghijklmnopqrstuvwxyz"; //notice including space and only lower case chars
 
-var lineH = 30; //lineheight
-var monkeys = []; //used to store Monkey objectss
+var config = {
+	lineH: 30, //lineHeight
+	monkeys: [], //used to store Monkey objectss
+	ycord: 2
+}
 
-function Monkey(title, y, pickFunc){
+
+function Monkey(title, pickFunc){
 	this.title = title;
-	this.y = y;
+	this.y = config.ycord;
+	config.ycord+=4;
 	this.pickFunc = ()=> pickFunc.call(this);
 	this.func = function(){
 		if(this.phraseAttempt != phrase){
@@ -20,52 +25,25 @@ function Monkey(title, y, pickFunc){
 
 Monkey.prototype.writeText = function(){
 	this.func();
-	sepLine(lineH*this.y);
+	sepLine(config.lineH*this.y);
 	fill('green');
-	text(this.title, width/2,lineH*(this.y+1))
+	text(this.title, width/2,config.lineH*(this.y+1))
 	fill('white');
-	text("Iterations: " + (this.iteration-1),width/2,lineH*(this.y+2));
-	text("Current attempt: " + this.phraseAttempt,width/2,lineH*(this.y+3));	
+	text("Iterations: " + (this.iteration-1),width/2,config.lineH*(this.y+2));
+	text("Current attempt: " + this.phraseAttempt,width/2,config.lineH*(this.y+3));	
 }
 
 function setup(){
 	
-	monkeys.push(new Monkey('USING ONLY RANDOMNESS',2,function(){
+	config.monkeys.push(new Monkey('USING ONLY RANDOMNESS',function(){
 		var output = "";
 		for (var i = 0; i<phrase.length; i++){
 			output = output + letters[Math.floor(Math.random()*letters.length)];
 		}
 		return output;
 	}));
-	
-	monkeys.push(new Monkey('RANDOM BUT KEEPING CORRECT LETTERS',6,function(){
-		var output="";
-		for(var i = 0; i <phrase.length; i++){
-			if (this.phraseAttempt[i]==phrase[i]){
-				//correct letter in position 'i'
-				output = output + this.phraseAttempt[i];
-			}else{
-				output = output + letters[Math.floor(Math.random()*letters.length)];
-			}
-		}
-		return output;
-	}));
-	
-	monkeys.push(new Monkey('USING EACH LETTER FROM "ALPHABET"',10,function(){
-		var output="";
-		for(var i = 0; i <phrase.length; i++){
-			if (this.phraseAttempt[i]==phrase[i]){
-				//correct letter in position 'i'
-				output = output + this.phraseAttempt[i];
-			}else{
-				//incorrect letter replaced
-				output = output + letters[this.iteration-1];
-			}
-		}
-		return output;
-	}));
-	
-	monkeys.push(new Monkey('BRUTE FORCE',14,function(){
+
+	config.monkeys.push(new Monkey('BRUTE FORCE',function(){
 		var output="";
 		this.curL = this.curL || 1; //current length of string
 		this.tracker = this.tracker || new Array(this.curL).fill(0); //used for keeping track of index for each letter position
@@ -90,7 +68,35 @@ function setup(){
 		}
 		return output;
 	}));
-	createCanvas(800,lineH*4.5*monkeys.length);
+
+	config.monkeys.push(new Monkey('RANDOM BUT KEEPING CORRECT LETTERS',function(){
+		var output="";
+		for(var i = 0; i <phrase.length; i++){
+			if (this.phraseAttempt[i]==phrase[i]){
+				//correct letter in position 'i'
+				output = output + this.phraseAttempt[i];
+			}else{
+				output = output + letters[Math.floor(Math.random()*letters.length)];
+			}
+		}
+		return output;
+	}));
+	
+	config.monkeys.push(new Monkey('USING EACH LETTER FROM "ALPHABET"',function(){
+		var output="";
+		for(var i = 0; i <phrase.length; i++){
+			if (this.phraseAttempt[i]==phrase[i]){
+				//correct letter in position 'i'
+				output = output + this.phraseAttempt[i];
+			}else{
+				//incorrect letter replaced
+				output = output + letters[this.iteration-1];
+			}
+		}
+		return output;
+	}));
+	
+	createCanvas(800,config.lineH*4.5*config.monkeys.length);
 }
 
 function draw(){
@@ -100,13 +106,13 @@ function draw(){
 	fill(225);
 	textSize(30);
 	textAlign(CENTER,CENTER);
-	text('Target Phrase: ' + phrase,width/2,lineH);
+	text('Target Phrase: ' + phrase,width/2,config.lineH);
 	
-	for(var k of monkeys){
+	for(var k of config.monkeys){
 		k.writeText();
 	}
 
-	if(monkeys.every((x)=>x.phraseAttempt==phrase)){
+	if(config.monkeys.every((x)=>x.phraseAttempt==phrase)){
 		//end of simulation (v. unlikely!)
 		noLoop();
 	}
