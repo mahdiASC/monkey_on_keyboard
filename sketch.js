@@ -1,6 +1,7 @@
 var phrase = "to be or not to be"; //characters used MUST be included in 'letters' variable
 var letters = " abcdefghijklmnopqrstuvwxyz"; //notice including space and only lower case chars
 
+
 var config = {
 	lineH: 30, //lineHeight
 	monkeys: [], //used to store Monkey objectss
